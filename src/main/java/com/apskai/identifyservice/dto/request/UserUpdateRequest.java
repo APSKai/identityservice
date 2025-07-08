@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class UserUpdateRequest {
-//    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
     private String lastname;
     private String firstname;

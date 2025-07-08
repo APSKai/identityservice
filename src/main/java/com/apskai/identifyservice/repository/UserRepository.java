@@ -7,5 +7,5 @@ import com.apskai.identifyservice.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-//    boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
 }
