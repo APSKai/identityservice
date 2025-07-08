@@ -2,6 +2,7 @@ package com.apskai.identifyservice.service;
 
 import java.util.List;
 
+import com.apskai.identifyservice.dto.request.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class UserService {
     public User createUser(UserCreationRequest request) {
         User user = new User();
 
-        if (userRepository.existsByUsername(request.getUsername()))
-            throw new RuntimeException("User existed.");
+//        if (userRepository.existsByUsername(request.getUsername()))
+//            throw new RuntimeException("User existed.");
 
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
@@ -39,14 +40,14 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
-    public User updateUser(String userId, UserCreationRequest request) {
+    public User updateUser(String userId, UserUpdateRequest request) {
         User user = getUser(userId);
-        user.setUsername(request.getUsername());
+
         user.setPassword(request.getPassword());
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setDoB(request.getDoB());
-        
+
         return userRepository.save(user);
     }
 

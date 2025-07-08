@@ -1,19 +1,15 @@
 package com.apskai.identifyservice.dto.request;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
-public class UserCreationRequest {
-
-//    @Size(min = 3, message = "Username must be at least 3 characters")
-    private String username;
-
+public class UserUpdateRequest {
 //    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
-    private String firstname;
     private String lastname;
+    private String firstname;
     private LocalDate DoB;
 }
