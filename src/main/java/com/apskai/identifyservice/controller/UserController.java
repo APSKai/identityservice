@@ -1,7 +1,9 @@
 package com.apskai.identifyservice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.apskai.identifyservice.dto.response.ApiResponse;
 import com.apskai.identifyservice.dto.request.UserUpdateRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +29,57 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody @Valid UserCreationRequest request) {
-        return userService.createUser(request);
+    public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+        ApiResponse<User> apiResponse = new ApiResponse<User>();
+
+        apiResponse.setResult(userService.createUser(request));
+        apiResponse.setCode(1000);
+        apiResponse.setMessage("Successfully!!");
+
+        return apiResponse;
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable String userId) {
-        return userService.getUser(userId);
+    public ApiResponse<User> getUser(@PathVariable String userId) {
+        ApiResponse<User> apiResponse = new ApiResponse<User>();
+
+        apiResponse.setResult(userService.getUser(userId));
+        apiResponse.setCode(1000);
+        apiResponse.setMessage("Successfully!!");
+
+        return apiResponse;
     }
 
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public ApiResponse<List<User>> getUsers() {
+        ApiResponse<List<User>> apiResponse = new ApiResponse<>();
+
+        apiResponse.setResult(userService.getUsers());
+        apiResponse.setCode(1000);
+        apiResponse.setMessage("Successfully!!");
+
+        return apiResponse;
     }
 
     @PutMapping("/{userId}")
-    public User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
-        return userService.updateUser(userId, request);
+    public ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
+        ApiResponse<User> apiResponse = new ApiResponse<User>();
+
+        apiResponse.setResult(userService.updateUser(userId, request));
+        apiResponse.setCode(1000);
+        apiResponse.setMessage("Successfully!!");
+
+        return apiResponse;
     }
-    
+
     @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable String userId) {
+    public ApiResponse deleteUser(@PathVariable String userId) {
+        ApiResponse apiResponse = new ApiResponse<>();
+
         userService.deleteUser(userId);
-        return "User has been deleted!";
+        apiResponse.setCode(1000);
+        apiResponse.setMessage("User has been deleted!!");
+
+        return apiResponse;
     }
 }
