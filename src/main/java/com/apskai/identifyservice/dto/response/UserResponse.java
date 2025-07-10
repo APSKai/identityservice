@@ -1,4 +1,4 @@
-package com.apskai.identifyservice.dto.request;
+package com.apskai.identifyservice.dto.response;
 
 import java.time.LocalDate;
 
@@ -11,12 +11,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreationRequest {
+public class UserResponse {
 
-    @Size(min = 3, message = "USERNAME_INVALID")
+    String id;
     String username;
-
-    @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
     String firstname;
     String lastname;
