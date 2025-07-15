@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRequest {
-    String username;
-    String password;
+// De verify token xem co hop le khong va check xem co dung la token do he thong nay issue khong
+public class IntrospectRequest {
+    String token;
 }
