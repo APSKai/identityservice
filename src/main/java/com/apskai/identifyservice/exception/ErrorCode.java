@@ -12,7 +12,8 @@ public enum ErrorCode {
     USERNAME_INVALID(1003, "Username must be at least 3 characters!!"),
     PASSWORD_INVALID(1004, "Password must be at least 8 characters!!"),
     USER_NOT_EXISTED(1005, "User not existed!!"),
-    UNAUTHENTICATED(1006, "Unauthenticated!!")
+    UNAUTHENTICATED(1006, "Unauthenticated!!"),
+    FAILED_TO_GENERATE_TOKEN(1007, "Failed to generate Token")
     ;
 
     private int code;

@@ -1,6 +1,7 @@
 package com.apskai.identifyservice.entity;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +10,11 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
@@ -23,4 +26,5 @@ public class User {
     String firstname;
     String lastname;
     LocalDate DoB;
+    Set<String> roles;
 }

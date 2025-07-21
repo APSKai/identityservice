@@ -12,6 +12,7 @@ import com.apskai.identifyservice.entity.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserCreationRequest request);
+    User toUser(UserResponse response);
     UserResponse toUserResponse(User user);
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

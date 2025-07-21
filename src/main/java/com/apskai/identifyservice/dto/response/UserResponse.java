@@ -1,8 +1,8 @@
 package com.apskai.identifyservice.dto.response;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,8 +15,8 @@ public class UserResponse {
 
     String id;
     String username;
-    String password;
     String firstname;
     String lastname;
     LocalDate DoB;
+    Set<String> roles;
 }
