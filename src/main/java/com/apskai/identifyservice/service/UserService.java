@@ -2,6 +2,7 @@ package com.apskai.identifyservice.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import com.apskai.identifyservice.dto.response.UserResponse;
 import com.apskai.identifyservice.enums.Role;
@@ -9,6 +10,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,13 +50,34 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    // Sử dụng annotation EnableMethodSecurity
+    // Với PreAuthorize thì những user có role được cho phép đi tiếp
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getUsers() {
+        log.info("In method getUsers");
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toUserResponse)
+                .toList();
     }
 
+    // Với PostAuthorize thì method sẽ được gọi nhưng nếu điều kiện trong ngoặc không thỏa mãn
+    // -> kết quả sẽ không được trả về và ngược lại
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getUser(String userId){
+        log.info("In method getUser");
         return userMapper.toUserResponse(userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
+    }
+
+    public UserResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        User user = userRepository.findByUsername(name).orElseThrow(() ->
+                new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        return userMapper.toUserResponse(user);
     }
 
     public UserResponse updateUser(String userId, UserUpdateRequest request) {

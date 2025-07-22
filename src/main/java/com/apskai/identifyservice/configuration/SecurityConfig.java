@@ -1,9 +1,11 @@
 package com.apskai.identifyservice.configuration;
 //
+import com.apskai.identifyservice.enums.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private String [] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect"};
@@ -33,22 +36,22 @@ public class SecurityConfig {
 //
 //        // Đối với endpoint /users thì được cho phép truy cập mà không cần security
 //        // Đối với request khác, phải được authenticated mới được access hệ thống
-        httpSecurity.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
-                        .anyRequest()
-                        .authenticated()
-        );
-
-        httpSecurity.oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwtConfigurer ->
-                        jwtConfigurer.decoder(jwtDecoder())
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+        httpSecurity
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
-        );
 
-        // Spring Security mặc định bật csrf (bảo vệ endpoint khỏi attack cross site)
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwtConfigurer ->
+                                jwtConfigurer.decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                        )
+                )
+
+                // Spring Security mặc định bật csrf (bảo vệ endpoint khỏi attack cross site)
+                .csrf(AbstractHttpConfigurer::disable);
 
         return httpSecurity.build();
     }
