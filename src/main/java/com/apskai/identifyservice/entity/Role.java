@@ -1,11 +1,11 @@
 package com.apskai.identifyservice.entity;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -14,16 +14,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-    String username;
-    String password;
-    String firstname;
-    String lastname;
-    LocalDate DoB;
+    String name;
+    String description;
 
     @ManyToMany
-    Set<Role> roles;
+    Set<Permission> permissions;
 }

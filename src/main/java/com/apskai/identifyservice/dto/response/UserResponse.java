@@ -3,6 +3,7 @@ package com.apskai.identifyservice.dto.response;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.apskai.identifyservice.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,5 +19,5 @@ public class UserResponse {
     String firstname;
     String lastname;
     LocalDate DoB;
-    Set<String> roles;
+    Set<RoleResponse> roles;
 }

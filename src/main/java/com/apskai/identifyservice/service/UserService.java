@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.apskai.identifyservice.dto.response.UserResponse;
 import com.apskai.identifyservice.enums.Role;
+import com.apskai.identifyservice.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,6 +34,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
     UserMapper userMapper;
+    RoleRepository roleRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername()))
@@ -45,14 +47,15 @@ public class UserService {
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
 
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
     // Sử dụng annotation EnableMethodSecurity
     // Với PreAuthorize thì những user có role được cho phép đi tiếp
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('APPROVE_POST')")
     public List<UserResponse> getUsers() {
         log.info("In method getUsers");
         return userRepository.findAll()
@@ -87,6 +90,9 @@ public class UserService {
         userMapper.updateUser(user, request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private String [] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect"};
+    private String [] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect", "/permissions"};
 
     @Value("${jwt.signerKey}")
     private String signerKey;
@@ -44,10 +44,13 @@ public class SecurityConfig {
                 )
 
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwtConfigurer ->
-                                jwtConfigurer.decoder(jwtDecoder())
-                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                        )
+                        oauth2
+                                .jwt(jwtConfigurer ->
+                                        jwtConfigurer.decoder(jwtDecoder())
+                                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                )
+                                // Khi authentication failed thì sẽ điều hướng đi đâu
+                                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 )
 
                 // Spring Security mặc định bật csrf (bảo vệ endpoint khỏi attack cross site)
@@ -60,7 +63,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter () {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
