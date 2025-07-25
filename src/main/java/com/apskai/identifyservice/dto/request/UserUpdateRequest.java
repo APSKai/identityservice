@@ -1,5 +1,6 @@
 package com.apskai.identifyservice.dto.request;
 
+import com.apskai.identifyservice.validator.DobConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +19,8 @@ public class UserUpdateRequest {
     String password;
     String lastname;
     String firstname;
-    LocalDate DoB;
+
+    @DobConstraint(min = 18, message = "INVALID_DOB")
+    LocalDate dob;
     List<String> roles;
 }

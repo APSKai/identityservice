@@ -18,6 +18,6 @@ public class UserResponse {
     String username;
     String firstname;
     String lastname;
-    LocalDate DoB;
+    LocalDate dob;
     Set<RoleResponse> roles;
 }

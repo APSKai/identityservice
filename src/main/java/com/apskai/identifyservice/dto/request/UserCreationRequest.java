@@ -2,6 +2,7 @@ package com.apskai.identifyservice.dto.request;
 
 import java.time.LocalDate;
 
+import com.apskai.identifyservice.validator.DobConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,5 +21,7 @@ public class UserCreationRequest {
     String password;
     String firstname;
     String lastname;
-    LocalDate DoB;
+
+    @DobConstraint(min = 18, message = "INVALID_DOB")
+    LocalDate dob;
 }
